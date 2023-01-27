@@ -1,0 +1,9 @@
+inp input_01.txt
+int 2
+max 10
+tar 0
+cwt 10 10 10 10 10 10
+vwt 10 10 10 10
+rev 10
+tri 1
+see 3145093538235481166
