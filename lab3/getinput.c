@@ -3,6 +3,8 @@
 #include<string.h>
 #include<time.h>
 
+#include "randomfuncs.h"
+
 // #define DEBUG 1
 
 /* SIG Simplified Iterated Greedy graph coloring algorithm C.C. McGeoch 2011 

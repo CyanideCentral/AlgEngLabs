@@ -1,12 +1,16 @@
 import subprocess
 import random
 import itertools
+import os
+import statistics
 DEBUG = False
 
 INITIAL_VALUES = [1, 2] # 1: distinct colors, 2: greedy
+
 # CWT_CANDIDATES includes all feasible combinations of 0/10 weights for 6 color reordering strategies
 CWT_CANDIDATES = list(itertools.product([0, 10], repeat=6))
 CWT_CANDIDATES.remove((0, 0, 0, 0, 0, 0))
+
 # VWT_CANDIDATES includes all feasible combinations of 0/10 weights for 4 vertex reordering strategies
 VWT_CANDIDATES = list(itertools.product([0, 10], repeat=4))
 VWT_CANDIDATES.remove((0, 0, 0, 0))
@@ -42,10 +46,10 @@ class SIGConfig:
 def generate_input(n=30, m=300):
     if m > n*(n-1)/2:
         raise ValueError('Too many edges')
-    subprocess.run(f'./randomgraph {n} {m} {random.getrandbits(63)} > input_01.txt', shell=True, check=True, capture_output=True)
+    subprocess.run(f'.{os.sep}randomgraph {n} {m} {random.getrandbits(63)} > input_01.txt', shell=True, check=True, capture_output=True)
 
 def run_sig():
-    output=subprocess.run('./sig <params.txt', shell=True, check=True, capture_output=True).stdout.decode('utf-8')
+    output=subprocess.run(f'.{os.sep}sig <params.txt', shell=True, check=True, capture_output=True).stdout.decode('utf-8')
     if DEBUG:
         print(output)
     results=output.split('\n')[-2].split()
@@ -75,16 +79,18 @@ def test_with_INITIAL_varying():
     # Set the default parameters here
     config = SIGConfig(INITIAL=1, MAXITER=10, TARGET=0, CWEIGHTS=[10, 10, 10, 10, 10, 10], VWEIGHTS=[10, 10, 10, 10], RLIMIT=10, TRIAL=1, SEED=None)
     # The size of input graphs
-    n = 30 # number of vertices
-    m = 300 # number of edges
+    n = 10 # number of vertices
+    m = 25 # number of edges
     # Specify the candidates for parameter value here
     for i in INITIAL_VALUES:
+    # for i in CWT_CANDIDATES:
         config.INITIAL = i
+        # config.CWEIGHTS = i
         config.write_params()
         # Specify the number of runs here
         color_count_list, color_score_list = repeat_test(config, repeat=500, random_input=True, n=n, m=m, random_seed=True)
         # Display average color_count and color_score
-        print(f'INITIAL={i}:', sum(color_count_list)/len(color_count_list), sum(color_score_list)/len(color_score_list))
+        print(f'INITIAL={i}: color_count={statistics.mean(color_count_list):.3f}±{statistics.stdev(color_count_list):.3f}, color_score={statistics.mean(color_score_list):.3f}±{statistics.stdev(color_score_list):.3f}')
 
 if __name__ == '__main__':
     # generate_input()

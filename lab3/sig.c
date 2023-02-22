@@ -400,8 +400,8 @@ result is array cperm[1..numcolors] (just the front): cperm[i] names the ith col
   switch (cr) {
   case 0: // 1..k up 
     cx = 1; 
-    // for (c = 1; c<= numnodes; c++)               // for all colors in up order 
-    for (c = 1; c<= numcolors; c++)               // for all colors in up order 
+    for (c = 1; c<= numnodes; c++)               // for all colors in up order 
+    // for (c = 1; c<= numcolors; c++)               // for all colors in up order 
       if (coloruse[c] == TRUE) cperm[cx++] = c;  // if in use, put it next in cperm 
     break; 
 
@@ -517,6 +517,7 @@ void sigcolor() {
 
   initialcoloring(); 
   saveAsBest(); 
+  printf("Initial coloring: %d colors, %d score\n", bestcolors, bestcolorscore);
 
 #ifdef DEBUG 
   printf("after initialize\n"); 

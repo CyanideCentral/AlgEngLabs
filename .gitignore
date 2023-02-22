@@ -1,3 +1,7 @@
 lab3/sig
 lab3/randomgraph
 *.DS_Store
+lab3/input_*
+*.class
+lab4/pack
+lab4/packsimple
